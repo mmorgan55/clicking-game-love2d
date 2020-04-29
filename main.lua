@@ -6,6 +6,9 @@ WINDOW_WIDTH = 650
 WINDOW_HEIGHT = 650
 
 local ec = EnemyCircle(250, 250, 25)
+local enemies = {}
+local x = 10
+local y = 10
 
 function love.load()
     love.window.setTitle('CLICK ATTACK!')
@@ -24,10 +27,20 @@ function love.keypressed(key)
     if key == 'escape' then
         love.event.quit()
     end
+
+    if key == 'space' then
+        table.insert(enemies, EnemyCircle(x, y, 10))
+        x = x + 10
+        y = y + 10
+    end
 end
 
 function love.update(dt)
-    print(love.mouse.getX() .. ', ' .. love.mouse.getY())
+    if love.mouse.isDown() then
+        local x, y = love.mouse.getPosition()
+
+        for k, ec in pairs(enemies) do
+            --TODO: this logic lol
     
 end
 
@@ -37,7 +50,9 @@ function love.draw()
     -- love.graphics.line(mx - WINDOW_WIDTH, my, mx + WINDOW_WIDTH, my)
     -- love.graphics.line(mx, my - WINDOW_HEIGHT, mx, my +WINDOW_HEIGHT)
     -- displayFPS()
-    ec:render()
+    for k, ec in pairs(enemies) do
+        ec:render()
+    end
 
     push:finish()
 end
